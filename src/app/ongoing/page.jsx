@@ -13,6 +13,7 @@ function CampaignDiscoveryCard({
     endsIn, // in days
     tag = "New", // New | Trending | High Reward
     onVisit = () => { },
+    slug, // unique campaign slug for shareable URL
 }) {
     const [timeLeft, setTimeLeft] = useState("");
     const [isHotlisted, setIsHotlisted] = useState(false);
@@ -33,25 +34,25 @@ function CampaignDiscoveryCard({
     };
 
     const handleShare = async () => {
+        const shareUrl = `https://oohpoint1.vercel.app/campaign/${slug}`;
+
         try {
             if (navigator.share) {
                 const shareData = {
-                    title: title,
+                    title,
                     text: `${title} by ${brand}\n${distance} away\nReward: ${reward}`,
-                    url: window.location.href, // link to campaign
+                    url: shareUrl,
                 };
-
                 await navigator.share(shareData);
             } else {
-                await navigator.clipboard.writeText(`${title} - ${brand} (${distance} away)`);
-                alert("Campaign details copied to clipboard!");
+                await navigator.clipboard.writeText(`${title} - ${brand} (${distance} away) ${shareUrl}`);
+                alert("Campaign link copied to clipboard!");
             }
         } catch (err) {
             console.error("Error sharing:", err);
             alert("Could not share the campaign.");
         }
     };
-
 
     const tagColors = {
         New: "bg-blue-500",
@@ -105,7 +106,7 @@ function CampaignDiscoveryCard({
 
                 {/* Actions */}
                 <div className="mt-6 flex items-center gap-3">
-                    {/* Visit Now button covering most space */}
+                    {/* Visit Now button */}
                     <button
                         onClick={onVisit}
                         className="flex-1 flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-sm text-sm font-medium shadow hover:bg-gray-900 transition duration-300"
@@ -113,7 +114,7 @@ function CampaignDiscoveryCard({
                         Visit Now <ArrowRight className="w-4 h-4" />
                     </button>
 
-                    {/* Hotlist circular button with fire animation */}
+                    {/* Hotlist button */}
                     <div className="relative">
                         <button
                             onClick={handleHotlistClick}
@@ -143,7 +144,6 @@ function CampaignDiscoveryCard({
                     >
                         <Share2 className="w-5 h-5" />
                     </button>
-
                 </div>
             </div>
 
@@ -173,7 +173,8 @@ function CampaignDiscoveryCard({
 export default function OngoingCampaignsSlider() {
     const campaigns = [
         {
-            banner: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=600&q=80",
+            slug: "coffee-corner-cappuccino", // unique slug
+            banner: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80",
             brand: "Coffee Corner",
             logo: "https://img.icons8.com/color/96/coffee-to-go.png",
             title: "Off on Every Cappuccino",
@@ -185,7 +186,8 @@ export default function OngoingCampaignsSlider() {
             onVisit: () => alert("Navigating to Coffee Corner campaign page..."),
         },
         {
-            banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
+            slug: "brewsters-happy-hours",
+            banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
             brand: "Brewsters",
             logo: "https://img.icons8.com/color/96/barista.png",
             title: "Happy Hours Buy 1 Get 1",
@@ -197,8 +199,6 @@ export default function OngoingCampaignsSlider() {
             onVisit: () => alert("Navigating to Brewsters campaign page..."),
         },
     ];
-
-
 
     return (
         <div className="overflow-x-auto scrollbar-hide">
