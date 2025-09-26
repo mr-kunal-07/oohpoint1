@@ -40,8 +40,8 @@ ${desc ? desc + "\n" : ""}
 🎁 Reward: ${reward}
 ⏳ ${timeLeft}
 
-Banner: ${banner}
-Campaign Link: ${window.location.href}`;
+Check it out here: ${window.location.href}
+${banner}`;
 
             if (navigator.share) {
                 const shareData = {
@@ -126,7 +126,10 @@ Campaign Link: ${window.location.href}`;
                             onClick={handleHotlistClick}
                             aria-pressed={isHotlisted}
                             className={`flex items-center justify-center w-10 h-10 border rounded-full transition duration-300 focus:outline-none
-                ${isHotlisted ? "bg-red-500 border-red-500 text-white" : "border-gray-300 text-red-500 hover:bg-gray-50"}`}
+                ${isHotlisted
+                                    ? "bg-red-500 border-red-500 text-white"
+                                    : "border-gray-300 text-red-500 hover:bg-gray-50"
+                                }`}
                             title={isHotlisted ? "Remove from hotlist" : "Add to hotlist"}
                         >
                             <Flame className="w-5 h-5" />
@@ -153,24 +156,30 @@ Campaign Link: ${window.location.href}`;
                 </div>
             </div>
 
+            {/* WhatsApp-style footer */}
+            <div className="bg-gray-900 text-gray-200 text-xs px-4 py-2 flex items-center justify-between">
+                <span>{reward} • {distance} away</span>
+                <span>{timeLeft}</span>
+            </div>
+
             {/* Fire animation styles */}
             <style jsx>{`
-                @keyframes fire1 {
-                    0% { transform: translate(0,0) scale(1); opacity: 1; }
-                    100% { transform: translate(-8px,-20px) scale(0.5); opacity: 0; }
-                }
-                @keyframes fire2 {
-                    0% { transform: translate(0,0) scale(1); opacity: 1; }
-                    100% { transform: translate(8px,-18px) scale(0.5); opacity: 0; }
-                }
-                @keyframes fire3 {
-                    0% { transform: translate(0,0) scale(1); opacity: 1; }
-                    100% { transform: translate(0,-22px) scale(0.5); opacity: 0; }
-                }
-                .animate-fire1 { animation: fire1 0.6s ease-out forwards; }
-                .animate-fire2 { animation: fire2 0.6s ease-out forwards; }
-                .animate-fire3 { animation: fire3 0.6s ease-out forwards; }
-            `}</style>
+        @keyframes fire1 {
+          0% { transform: translate(0,0) scale(1); opacity: 1; }
+          100% { transform: translate(-8px,-20px) scale(0.5); opacity: 0; }
+        }
+        @keyframes fire2 {
+          0% { transform: translate(0,0) scale(1); opacity: 1; }
+          100% { transform: translate(8px,-18px) scale(0.5); opacity: 0; }
+        }
+        @keyframes fire3 {
+          0% { transform: translate(0,0) scale(1); opacity: 1; }
+          100% { transform: translate(0,-22px) scale(0.5); opacity: 0; }
+        }
+        .animate-fire1 { animation: fire1 0.6s ease-out forwards; }
+        .animate-fire2 { animation: fire2 0.6s ease-out forwards; }
+        .animate-fire3 { animation: fire3 0.6s ease-out forwards; }
+      `}</style>
         </div>
     );
 }
@@ -178,7 +187,8 @@ Campaign Link: ${window.location.href}`;
 export default function OngoingCampaignsSlider() {
     const campaigns = [
         {
-            banner: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=600&q=80",
+            banner:
+                "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=600&q=80",
             brand: "Coffee Corner",
             logo: "https://img.icons8.com/color/96/coffee-to-go.png",
             title: "Off on Every Cappuccino",
@@ -190,7 +200,8 @@ export default function OngoingCampaignsSlider() {
             onVisit: () => alert("Navigating to Coffee Corner campaign page..."),
         },
         {
-            banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
+            banner:
+                "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
             brand: "Brewsters",
             logo: "https://img.icons8.com/color/96/barista.png",
             title: "Happy Hours Buy 1 Get 1",
