@@ -13,7 +13,6 @@ function CampaignDiscoveryCard({
     endsIn, // in days
     tag = "New", // New | Trending | High Reward
     onVisit = () => { },
-    slug, // unique campaign slug for shareable URL
 }) {
     const [timeLeft, setTimeLeft] = useState("");
     const [isHotlisted, setIsHotlisted] = useState(false);
@@ -34,19 +33,26 @@ function CampaignDiscoveryCard({
     };
 
     const handleShare = async () => {
-        const shareUrl = `https://oohpoint1.vercel.app/campaign/${slug}`;
-
         try {
+            const shareText = `${title} by ${brand}
+${desc ? desc + "\n" : ""}
+📍 ${distance} away
+🎁 Reward: ${reward}
+⏳ ${timeLeft}
+
+Banner: ${banner}
+Campaign Link: ${window.location.href}`;
+
             if (navigator.share) {
                 const shareData = {
                     title,
-                    text: `${title} by ${brand}\n${distance} away\nReward: ${reward}`,
-                    url: shareUrl,
+                    text: shareText,
+                    url: window.location.href, // main campaign link
                 };
                 await navigator.share(shareData);
             } else {
-                await navigator.clipboard.writeText(`${title} - ${brand} (${distance} away) ${shareUrl}`);
-                alert("Campaign link copied to clipboard!");
+                await navigator.clipboard.writeText(shareText);
+                alert("Campaign details copied to clipboard!");
             }
         } catch (err) {
             console.error("Error sharing:", err);
@@ -149,23 +155,22 @@ function CampaignDiscoveryCard({
 
             {/* Fire animation styles */}
             <style jsx>{`
-        @keyframes fire1 {
-          0% { transform: translate(0,0) scale(1); opacity: 1; }
-          100% { transform: translate(-8px,-20px) scale(0.5); opacity: 0; }
-        }
-        @keyframes fire2 {
-          0% { transform: translate(0,0) scale(1); opacity: 1; }
-          100% { transform: translate(8px,-18px) scale(0.5); opacity: 0; }
-        }
-        @keyframes fire3 {
-          0% { transform: translate(0,0) scale(1); opacity: 1; }
-          100% { transform: translate(0,-22px) scale(0.5); opacity: 0; }
-        }
-
-        .animate-fire1 { animation: fire1 0.6s ease-out forwards; }
-        .animate-fire2 { animation: fire2 0.6s ease-out forwards; }
-        .animate-fire3 { animation: fire3 0.6s ease-out forwards; }
-      `}</style>
+                @keyframes fire1 {
+                    0% { transform: translate(0,0) scale(1); opacity: 1; }
+                    100% { transform: translate(-8px,-20px) scale(0.5); opacity: 0; }
+                }
+                @keyframes fire2 {
+                    0% { transform: translate(0,0) scale(1); opacity: 1; }
+                    100% { transform: translate(8px,-18px) scale(0.5); opacity: 0; }
+                }
+                @keyframes fire3 {
+                    0% { transform: translate(0,0) scale(1); opacity: 1; }
+                    100% { transform: translate(0,-22px) scale(0.5); opacity: 0; }
+                }
+                .animate-fire1 { animation: fire1 0.6s ease-out forwards; }
+                .animate-fire2 { animation: fire2 0.6s ease-out forwards; }
+                .animate-fire3 { animation: fire3 0.6s ease-out forwards; }
+            `}</style>
         </div>
     );
 }
@@ -173,8 +178,7 @@ function CampaignDiscoveryCard({
 export default function OngoingCampaignsSlider() {
     const campaigns = [
         {
-            slug: "coffee-corner-cappuccino", // unique slug
-            banner: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80",
+            banner: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=600&q=80",
             brand: "Coffee Corner",
             logo: "https://img.icons8.com/color/96/coffee-to-go.png",
             title: "Off on Every Cappuccino",
@@ -186,8 +190,7 @@ export default function OngoingCampaignsSlider() {
             onVisit: () => alert("Navigating to Coffee Corner campaign page..."),
         },
         {
-            slug: "brewsters-happy-hours",
-            banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+            banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
             brand: "Brewsters",
             logo: "https://img.icons8.com/color/96/barista.png",
             title: "Happy Hours Buy 1 Get 1",
